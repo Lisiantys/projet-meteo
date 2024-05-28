@@ -10,9 +10,11 @@ const router = useRouter();
 const searchWeather = async () => {
   weatherStore.city = city.value;
   await weatherStore.fetchWeather();
-  if (!weatherStore.error) {
-    router.push('/weather');  // Corrigé le chemin pour correspondre au chemin défini dans le routeur
-  }
+  city.value = '';
+};
+
+const removeCity = (id) => {
+  weatherStore.removeCity(id);
 };
 </script>
 
@@ -23,5 +25,50 @@ const searchWeather = async () => {
     </div>
     <button @click="searchWeather">Rechercher</button>
     <div v-if="weatherStore.error" class="error-message">{{ weatherStore.error }}</div>
+
+    <div class="recent-searches" v-if="weatherStore.recentSearches.length">
+      <h3>Liste des villes</h3>
+      <ul>
+        <li v-for="search in weatherStore.recentSearches" :key="search.id">
+          <h4>{{ search.name }}</h4>
+          <img
+            :src="`http://openweathermap.org/img/wn/${search.icon}@2x.png`"
+            :alt="search.description"
+          />
+          <p>{{ search.temp }}°C</p>
+          <p>{{ search.description }}</p>
+          <button @click="removeCity(search.id)" class="remove-btn">Supprimer</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
+
+<style scoped>
+ul{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  list-style: none;
+}
+
+h3{
+  text-align: center;
+}
+
+li{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #aaa;
+  border-radius: 16px;
+  padding-bottom: 24px;
+}
+
+li p{
+  margin: 0;
+  padding: 0;
+}
+</style>
