@@ -43,5 +43,6 @@ export const useWeatherStore = defineStore('weather', {
         search => search.id !== id
       );
     },
-  }
+  },
+  persist: true,
 });
