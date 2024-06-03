@@ -4,10 +4,10 @@ import { API_KEY } from '../config';
 
 export const useWeatherStore = defineStore('weather', {
   state: () => ({
-    city: '',
-    weather: null,
-    error: null,
-    recentSearches: []
+    city: '', //Nom de la ville en entrée
+    weather: null, //Contient l'ensemble des données retourné par l'api
+    error: null, //message d'erreur
+    recentSearches: [] //ajout des données de l'api stocké dans weather . Tableau objets
   }),
   actions: {
     async fetchWeather() {

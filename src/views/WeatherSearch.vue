@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useWeatherStore } from '../stores/weatherStore';
-import { useRouter } from 'vue-router';
 
 const weatherStore = useWeatherStore();
 const city = ref('');
-const router = useRouter();
 
 const searchWeather = async () => {
   weatherStore.city = city.value;
@@ -29,15 +27,17 @@ const removeCity = (id) => {
     <div class="recent-searches" v-if="weatherStore.recentSearches.length">
       <h3>Liste des villes</h3>
       <ul>
-        <li v-for="search in weatherStore.recentSearches" :key="search.id">
-          <h4>{{ search.name }}</h4>
+        <!-- Affichage -->
+        <li v-for="city in weatherStore.recentSearches" :key="city.id">
+          <h4>{{ city.name }}</h4>
           <img
-            :src="`http://openweathermap.org/img/wn/${search.icon}@2x.png`"
-            :alt="search.description"
+            :src="`http://openweathermap.org/img/wn/${city.icon}@2x.png`"
+            :alt="city.description"
           />
-          <p>{{ search.temp }}°C</p>
-          <p>{{ search.description }}</p>
-          <button @click="removeCity(search.id)" class="remove-btn">Supprimer</button>
+          <p>{{ city.temp }}°C</p>
+          <p>{{ city.description }}</p>
+          <!-- Supression -->
+          <button @click="removeCity(city.id)" class="remove-btn">Supprimer</button>
         </li>
       </ul>
     </div>
